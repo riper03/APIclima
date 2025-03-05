@@ -115,15 +115,23 @@ async function updateClimaInfo(ciudad) {
 }
 async function updateSigClimas(ciudad) {
     const sigsclimas = await getFetchData('forecast', ciudad);
-    const timeTaken = '12:00:00';
-    const fechasNuevas = new Date().toISOString().split('T')[0]; 
+    const fechasNuevas = new Date().toISOString().split('T')[0];
     tiempoItems.innerHTML = '';
 
+    const diasUnicos = []; 
+    const pronosticosMostrados = []; 
+
     sigsclimas.list.forEach(clima => {
-        if (clima.dt_txt.includes(timeTaken) &&
-            !clima.dt_txt.includes(fechasNuevas)) {
-            updateClimasItems(clima);
+        const fechaClima = clima.dt_txt.split(' ')[0]; 
+        if (!diasUnicos.includes(fechaClima) && fechaClima !== fechasNuevas) {
+            diasUnicos.push(fechaClima); 
+            pronosticosMostrados.push(clima); 
         }
+    });
+
+ 
+    pronosticosMostrados.slice(0, 5).forEach(clima => {
+        updateClimasItems(clima);
     });
 }
 

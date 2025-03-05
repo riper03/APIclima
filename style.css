@@ -159,7 +159,7 @@ transition: 0.3s background;
 
 @media (max-width: 600px) {
     .contenido {
-        width: 50%; 
+        width: 80%; 
         min-height: 450px; 
     }
 
