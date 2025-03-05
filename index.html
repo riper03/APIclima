@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clima</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" />
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <main class="contenido">
+        <header class="input-contenido">
+            <input class="ciudad-texto" placeholder="Buscar ciudad">
+            <button class="btn-buscar">
+                <span class="material-symbols-outlined">
+                    search
+                </span>
+            </button>
+        </header>
+        <section class="info-clima" style="display: none;">
+            <div class="ubicacion-fecha">
+                <div class="ubicacion">
+                    <span class="material-symbols-outlined">
+                        public
+                    </span>
+                    <h4 class="texto-pais">Tizayuca</h4>
+                </div>
+                <h5 class="fecha-texto regular-text">lunes, 03 Marzo</h5>
+            </div>
+
+            <div class="resumen-clima-contenedor">
+                <img src="/img/clouds.svg" alt="" class="resumen-clima-img">
+                <div class="resumen-clima-info">
+                    <h1 class="temperatura-text">29 °C</h1>
+                    <h3 class="condicion-text regular-text">nubes</h3>
+                </div>
+            </div>
+            <div class="conteiner-condiciones">
+                <div class="codicion-item">
+                    <span class="material-symbols-outlined">
+                        water_drop
+                    </span>
+                    <div class="condicion-info">
+                        <h5 class="regular-text">Humedad</h5>
+                        <h5 class="humedad-valor">90%</h5>
+                    </div>
+                </div>
+
+                <div class="codicion-item">
+                    <span class="material-symbols-outlined">
+                        airwave
+                    </span>
+                    <div class="condicion-info">
+                        <h5 class="regular-text">Velocidad Viento</h5>
+                        <h5 class="viento-valor">2 m/s</h5>
+
+                    </div>
+                </div>
+            </div>
+            <div class="tiempo-items-contenedor">
+                <div class="clima-item">
+                    <h5 class="clima-item-fecha regular-text">1 Marzo</h5>
+                    <img src="img/drizzle.svg" class="clima-item-imagen">
+                    <h5 class="clima-item-temperatura">10 °C</h5>
+                </div>
+                <div class="clima-item">
+                    <h5 class="clima-item-fecha regular-text">1 Marzo</h5>
+                    <img src="img/drizzle.svg" class="clima-item-imagen">
+                    <h5 class="clima-item-temperatura">10 °C</h5>
+                </div>
+                <div class="clima-item">
+                    <h5 class="clima-item-fecha regular-text">1 Marzo</h5>
+                    <img src="img/drizzle.svg" class="clima-item-imagen">
+                    <h5 class="clima-item-temperatura">10 °C</h5>
+                </div>
+                <div class="clima-item">
+                    <h5 class="clima-item-fecha regular-text">1 Marzo</h5>
+                    <img src="img/drizzle.svg" class="clima-item-imagen">
+                    <h5 class="clima-item-temperatura">10 °C</h5>
+                </div>
+        </section>
+        <section class="buscar-ciudad-mensaje section-mensaje">
+            <img src="img/search-city.png">
+            <div>
+                <h1>Buscar ciudad</h1>
+                <h4 class="regular-text">Encontraras las condicones climaticas</h4>
+            </div>
+        </section>
+        <section class="not-found section-mensaje" style="display: none;">
+            <img src="img/not-found.png">
+            <div>
+                <h1>Buscar ciudad</h1>
+                <h4 class="regular-text">Encontraras las condicones climaticas</h4>
+            </div>
+        </section>
+    </main>
+</body>
+
+</html>

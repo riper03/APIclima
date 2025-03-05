@@ -1,0 +1,184 @@
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-weight: 600;
+}
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: url("img/clima.gif") no-repeat center center fixed;
+    background-size: cover; /* Ajusta la imagen al tamaño de la pantalla */
+    width: 100%;
+    height: 100vh; /* Usa 100vh para ocupar toda la altura de la pantalla */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-image 0.5s ease-in-out; /* Transición suave al cambiar el fondo */
+}
+
+.regular-text{
+    font-weight: 400;
+}
+
+/*Comienza el cuadro*/
+.input-contenido{
+    position: relative;
+    margin-bottom: 25px;
+}
+.contenido{
+    width: 400px;
+    height: 496px;
+    z-index: 1;
+    background: linear-gradient(to top, rgba(92, 87, 87, 0.8) 0%, rgba(255, 255, 255, 0.8) 100%);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    padding: 20px;
+}
+.ciudad-texto{
+    width: 100%;
+    padding: 10px 16px;
+    border-radius: 99px;
+    border: 3px solid transparent;
+    background: rgb(0,0,0,0.15);
+    outline: none;
+    font-weight: 500;
+    transition: 0.25s border;
+    padding-right: 45px;
+}
+.ciudad-texto:focus{ 
+    border: 3px solid rgb(0,0,0,0.15);
+}
+.ciudad-texto::placeholder{
+    color: aliceblue;
+}
+.btn-buscar{
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+background: none;
+display: flex;
+border: none;
+cursor: pointer;
+}
+
+.info-clima{
+display: flex;
+flex-direction: column;
+gap: 25px;
+}
+.ubicacion-fecha{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.ubicacion{
+    display: flex;
+    align-items: center;
+    gap: 6px    ;
+}
+
+.resumen-clima-contenedor{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.resumen-clima-img{
+    width: 120px;
+    height: 120px;
+}
+.resumen-clima-info{
+    text-align: end;
+}
+
+.conteiner-condiciones{
+    display: flex;
+    justify-content: space-between;
+}
+
+.codicion-item{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.codicion-item span{
+    font-size: 30px;
+}
+.tiempo-items-contenedor{
+    display: flex;
+    gap: 15px;
+    overflow: scroll;
+    padding-bottom: 12px;
+}
+.tiempo-items-contenedor::-webkit-scrollbar{
+    height: 8px;
+}
+.tiempo-items-contenedor::-webkit-scrollbar-track{
+    background: rgb(0,0,0,0.1);
+    border-radius: 99px;
+}
+.tiempo-items-contenedor::-webkit-scrollbar-thumb{
+    background: rgb(0,0,0,0.15);
+    border-radius: 99px;
+}
+.clima-item{
+    min-width: 70px;
+    background: rgb(255,255,255,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px;
+    align-items: center;
+border-radius: 12px;
+transition: 0.3s background;
+}
+.clima-item:hover{
+    background: rgb(255,255,255,0.15);
+}
+.clima-item-imagen{
+    width: 35px;
+    height: 35px;
+}
+/*Seccion Mensaje*/
+.section-mensaje{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 15px;
+    margin-top: 25%;
+}
+
+.section-mensaje img{
+    height: 180px;
+    width: fit-content;
+}
+
+@media (max-width: 600px) {
+    .contenido {
+        width: 50%; 
+        min-height: 450px; 
+    }
+
+    .resumen-clima-img {
+        width: 80px; 
+        height: 80px;
+    }
+
+    .tiempo-items-contenedor {
+        gap: 10px; 
+    }
+}
+
+@media (max-width: 400px) {
+    .contenido {
+        padding: 15px; 
+    }
+
+    .ciudad-texto {
+        font-size: 14px;
+    }
+}
