@@ -1,0 +1,38 @@
+{
+    "name": "Api climas",
+    "short_name": "Apli climas",
+    "description": "Pronostico climas",
+    "lang":"es-mx",
+    "display": "standalone", 
+    "background_color": "#ffffff",
+    "theme_color": "#ffffff",
+    "orientation": "portrait",
+    "icons":[
+        {
+            "src": "img/icono2.png",
+            "sizes": "192x192",
+            "type": "img/png"
+        },
+        {
+            "src": "img/icono1.png",
+            "sizes": "512x512",
+            "type": "img/png"
+        }
+    ],
+  "screenshots": [
+    {
+      "src": "img/Desktop_Captura.png",
+      "sizes": "1865x893",
+      "type": "img/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "img/Mobile_Captura.png",
+      "sizes": "365x796",
+      "type": "img/png",
+      "form_factor": "narrow"
+    }
+    ],
+    "id":"index.html",
+    "start_url": "index.html"
+}

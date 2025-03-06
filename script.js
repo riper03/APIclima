@@ -46,13 +46,13 @@ function getWeatherIcon(id) {
 }
 
 function getBackgroundImage(id) {
-    if (id <= 232) return 'tormenta.gif'; 
+    if (id <= 232) return 'tormenta.gif';
     if (id <= 321) return 'chispeando.gif';
-    if (id <= 531) return 'lluvia.gif'; 
+    if (id <= 531) return 'lluvia.gif';
     if (id <= 622) return 'newando.gif';
-    if (id <= 781) return 'niebla.gif'; 
+    if (id <= 781) return 'niebla.gif';
     if (id <= 800) return 'soleado.gif';
-    if (id > 800) return 'nublado.gif';     return null; 
+    if (id > 800) return 'nublado.gif'; return null;
 }
 
 function GetCurrentDate() {
@@ -80,56 +80,62 @@ const traduccionesClima = {
 };
 
 async function updateClimaInfo(ciudad) {
-    const DatosClima = await getFetchData('weather', ciudad);
-    if (DatosClima.cod != 200) {
+    try {
+        const DatosClima = await getFetchData('weather', ciudad);
+        if (DatosClima.cod != 200) {
+            showDisplaySection(noEncontrado);
+            return;
+        }
+        const {
+            name: country,
+            main: { temp, humidity },
+            weather: [{ id, main }],
+            wind: { speed }
+        } = DatosClima;
+        fechaTexto.textContent = GetCurrentDate();
+        textoPais.textContent = country;
+        textoTemperatura.textContent = Math.round(temp) + '°C';
+        textoCondicion.textContent = traduccionesClima[main] || main;
+        textoHumedad.textContent = humidity + '%';
+        textoViento.textContent = speed + 'km/h';
+        imgClimas.src = `/img/${getWeatherIcon(id)}`;
+
+
+        // fondo 
+        const backgroundImage = getBackgroundImage(id);
+        const body = document.body;
+        if (backgroundImage) {
+            body.style.backgroundImage = `url('/img/${backgroundImage}')`;
+        } else {
+            body.style.backgroundImage = 'url("img/clima.gif")';
+        }
+        body.style.backgroundSize = 'cover';
+        body.style.backgroundPosition = 'center';
+
+        await updateSigClimas(ciudad);
+        showDisplaySection(climaInfo);
+    } catch (error) {
+        console.error('Error al actualizar la información del clima:', error);
         showDisplaySection(noEncontrado);
-        return;
     }
-    const {
-        name: country,
-        main: { temp, humidity },
-        weather: [{ id, main }],
-        wind: { speed }
-    } = DatosClima;
-    fechaTexto.textContent = GetCurrentDate();
-    textoPais.textContent = country;
-    textoTemperatura.textContent = Math.round(temp) + '°C';
-    textoCondicion.textContent = traduccionesClima[main] || main; 
-    textoHumedad.textContent = humidity + '%';
-    textoViento.textContent = speed + 'km/h';
-    imgClimas.src = `/img/${getWeatherIcon(id)}`;
-
-    // fondo 
-    const backgroundImage = getBackgroundImage(id);
-    const body = document.body;
-    if (backgroundImage) {
-        body.style.backgroundImage = `url('/img/${backgroundImage}')`;
-    } else {
-        body.style.backgroundImage = 'url("img/clima.gif")'; 
-    }
-    body.style.backgroundSize = 'cover';
-    body.style.backgroundPosition = 'center';
-
-    await updateSigClimas(ciudad);
-    showDisplaySection(climaInfo);
 }
 async function updateSigClimas(ciudad) {
     const sigsclimas = await getFetchData('forecast', ciudad);
     const fechasNuevas = new Date().toISOString().split('T')[0];
     tiempoItems.innerHTML = '';
 
-    const diasUnicos = []; 
-    const pronosticosMostrados = []; 
+    const diasUnicos = [];
+    const pronosticosMostrados = [];
 
     sigsclimas.list.forEach(clima => {
-        const fechaClima = clima.dt_txt.split(' ')[0]; 
+        const fechaClima = clima.dt_txt.split(' ')[0];
         if (!diasUnicos.includes(fechaClima) && fechaClima !== fechasNuevas) {
-            diasUnicos.push(fechaClima); 
-            pronosticosMostrados.push(clima); 
+            diasUnicos.push(fechaClima);
+            pronosticosMostrados.push(clima);
         }
     });
 
- 
+
     pronosticosMostrados.slice(0, 5).forEach(clima => {
         updateClimasItems(clima);
     });
@@ -141,7 +147,7 @@ function updateClimasItems(clima) {
         dt_txt: date,
         weather: [{ id }],
         main: { temp }
-    } = clima; 
+    } = clima;
 
     const dateTaken = new Date(date);
     const dateOptions = {
