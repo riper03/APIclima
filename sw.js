@@ -73,34 +73,47 @@ self.addEventListener('activate', (event) => {
 });
 
 //fetch
-self.addEventListener('fetch', function(e) {
+self.addEventListener('fetch', function (e) {
     console.log('Service Worker: Fetching', e.request.url);
-    
+
+    // Evitar cachear las solicitudes a la API del clima
+    if (e.request.url.includes('api.openweathermap.org')) {
+        // Hacer la solicitud a la API sin cachear
+        e.respondWith(fetch(e.request));
+        return;
+    }
+
+    // Cachear solo archivos estáticos
     e.respondWith(
-        caches.match(e.request).then(function(response) {
-            if(response) {
+        caches.match(e.request).then(function (response) {
+            if (response) {
                 console.log('Cache encontrada', e.request.url);
                 return response;
             }
-            var requestClone = e.request.clone();
-            fetch(requestClone).then(function(response) {
-                if(!response){
-                    console.log('No se encontro respuesta');
+
+            // Si no está en caché, hacer la solicitud a la red
+            return fetch(e.request.clone()).then(function (response) {
+                if (!response || response.status !== 200 || response.type !== 'basic') {
                     return response;
                 }
+
+                // Cachear la respuesta para futuras solicitudes
                 var responseClone = response.clone();
-                
-                caches.open(CACHE_NAME).then(function(cache) {
+                caches.open(CACHE_NAME).then(function (cache) {
                     cache.put(e.request, responseClone);
-                    return response;
                 });
-            })
-            .catch(function(err){
+
+                return response;
+            }).catch(function (err) {
                 console.log('Error al hacer fetch', err);
-            })
-        })
-    )
-})
+                return new Response('Error de red', {
+                    status: 408,
+                    statusText: 'Solicitud de red fallida'
+                });
+            });
+        })
+    );
+});
 // Acción al hacer clic en una notificación
 self.addEventListener('notificationclick', function(event) {
     console.log('Notificación clickeada', event.notification);

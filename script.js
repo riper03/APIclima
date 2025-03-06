@@ -14,30 +14,42 @@ const tiempoItems = document.querySelector('.tiempo-items-contenedor');
 const apikey = 'e0ceda4e10427d9f579c5e8562e70f4b';
 
 btnBuscar.addEventListener('click', () => {
-    if (inputContenido.value.trim() != '') {
-        updateClimaInfo(inputContenido.value);
+    const ciudad = inputContenido.value.trim(); // Limpia la entrada
+    if (ciudad !== '') {
+        updateClimaInfo(ciudad);
         inputContenido.value = '';
         inputContenido.blur();
     }
 });
 
 inputContenido.addEventListener('keydown', (event) => {
-    if (event.key == 'Enter' && inputContenido.value.trim() != '') {
-        updateClimaInfo(inputContenido.value);
-        inputContenido.value = '';
-        inputContenido.blur();
+    if (event.key === 'Enter') {
+        const ciudad = inputContenido.value.trim(); // Limpia la entrada
+        if (ciudad !== '') {
+            updateClimaInfo(ciudad);
+            inputContenido.value = '';
+            inputContenido.blur();
+        }
     }
 });
 
 async function getFetchData(endPoint, ciudad) {
     const url = `https://api.openweathermap.org/data/2.5/${endPoint}?q=${ciudad}&appid=${apikey}&units=metric&lang=es-ES`;
-    const response = await fetch(url);
-    return response.json();
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error('Error en la respuesta de la API');
+        }
+        return response.json();
+    } catch (error) {
+        console.error('Error al obtener datos:', error);
+        throw error;
+    }
 }
 
 function getWeatherIcon(id) {
     if (id <= 232) return 'thunderstorm.svg';
-    if (id <= 321) return 'drizzley.svg';
+    if (id <= 321) return 'drizzle.svg';
     if (id <= 531) return 'rain.svg';
     if (id <= 622) return 'snow.svg';
     if (id <= 781) return 'atmosphere.svg';
@@ -49,10 +61,11 @@ function getBackgroundImage(id) {
     if (id <= 232) return 'tormenta.gif';
     if (id <= 321) return 'chispeando.gif';
     if (id <= 531) return 'lluvia.gif';
-    if (id <= 622) return 'newando.gif';
+    if (id <= 622) return 'nevando.gif';
     if (id <= 781) return 'niebla.gif';
     if (id <= 800) return 'soleado.gif';
-    if (id > 800) return 'nublado.gif'; return null;
+    if (id > 800) return 'nublado.gif';
+    return null;
 }
 
 function GetCurrentDate() {
@@ -100,7 +113,6 @@ async function updateClimaInfo(ciudad) {
         textoViento.textContent = speed + 'km/h';
         imgClimas.src = `/img/${getWeatherIcon(id)}`;
 
-
         // fondo 
         const backgroundImage = getBackgroundImage(id);
         const body = document.body;
@@ -119,28 +131,31 @@ async function updateClimaInfo(ciudad) {
         showDisplaySection(noEncontrado);
     }
 }
+
 async function updateSigClimas(ciudad) {
-    const sigsclimas = await getFetchData('forecast', ciudad);
-    const fechasNuevas = new Date().toISOString().split('T')[0];
-    tiempoItems.innerHTML = '';
+    try {
+        const sigsclimas = await getFetchData('forecast', ciudad);
+        const fechasNuevas = new Date().toISOString().split('T')[0];
+        tiempoItems.innerHTML = '';
 
-    const diasUnicos = [];
-    const pronosticosMostrados = [];
+        const diasUnicos = [];
+        const pronosticosMostrados = [];
 
-    sigsclimas.list.forEach(clima => {
-        const fechaClima = clima.dt_txt.split(' ')[0];
-        if (!diasUnicos.includes(fechaClima) && fechaClima !== fechasNuevas) {
-            diasUnicos.push(fechaClima);
-            pronosticosMostrados.push(clima);
-        }
-    });
+        sigsclimas.list.forEach(clima => {
+            const fechaClima = clima.dt_txt.split(' ')[0];
+            if (!diasUnicos.includes(fechaClima) && fechaClima !== fechasNuevas) {
+                diasUnicos.push(fechaClima);
+                pronosticosMostrados.push(clima);
+            }
+        });
 
-
-    pronosticosMostrados.slice(0, 5).forEach(clima => {
-        updateClimasItems(clima);
-    });
+        pronosticosMostrados.slice(0, 5).forEach(clima => {
+            updateClimasItems(clima);
+        });
+    } catch (error) {
+        console.error('Error al obtener el pronóstico:', error);
+    }
 }
-
 
 function updateClimasItems(clima) {
     const {
